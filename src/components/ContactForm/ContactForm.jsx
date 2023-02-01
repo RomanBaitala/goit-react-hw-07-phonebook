@@ -1,14 +1,29 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Label, Input, Form } from './ContactForm.styled';
-import { addContact } from '../../redux/contactsSlice';
+import { addContact } from '../../redux/operations';
+import { selectContacts } from 'redux/selectors';
+import Notiflix from 'notiflix';
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
+  const contacts = useSelector(selectContacts);
 
   const handleSubmit = event => {
     event.preventDefault();
     const form = event.target;
-    dispatch(addContact(form.elements.name.value, form.elements.number.value));
+    contacts.contacts.filter(
+      contact =>
+        contact.name.toLowerCase() === form.elements.name.value.toLowerCase()
+    ).length > 0
+      ? Notiflix.Notify.failure(
+          `${form.elements.name.value} is already in phonebook`
+        )
+      : dispatch(
+          addContact({
+            name: form.elements.name.value,
+            phone: form.elements.number.value,
+          })
+        );
     form.reset();
   };
 
