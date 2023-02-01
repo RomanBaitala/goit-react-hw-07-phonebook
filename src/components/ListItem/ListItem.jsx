@@ -9,7 +9,7 @@ export const ListItem = ({ contact: { name, phone, id } }) => {
 
   return (
     <div>
-      {name} {phone} {id}
+      {name} {phone}
       <Button type="button" onClick={onDeleteContact}>
         Видалити
       </Button>
